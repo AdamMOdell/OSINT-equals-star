@@ -1,2 +1,2 @@
-# OSINT-equals-star
-OSINT=*, Chrome extension that searches all the threat feeds
+# OSINT=*
+A Chrome extension that searches all the threat feeds
