@@ -6,12 +6,19 @@ var menuId = chrome.contextMenus.create({
 })
 
 function main(info, tab) {
+	// get highlighted text
 	var IOC = info.selectionText;
+	
+	// remove whitespace, quotes, brackets
 	IOC = IOC.replace(/[\"\'\[\] ]/g, '');
 	
-	var ishash = !IOC.search(/\b[A-Fa-f0-9]{32,64}\b/); // run hash search with regex
+	// regex check if IOC is md5, sha1, sha256 hash
+	var ishash = !IOC.search(/\b[A-Fa-f0-9]{32,64}\b/);
+	
+	// regex check if IOC is IPv4 address
 	var isIP = !IOC.search(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/);
-	if (ishash){ // hash
+	
+	if (ishash){ // search hash OSINT sources
 		chrome.windows.create({
 		  url: [`https://www.virustotal.com/gui/search/${IOC}`,
 				`https://talosintelligence.com/reputation_center/lookup?search=${IOC}`,
@@ -20,7 +27,7 @@ function main(info, tab) {
 		  incognito: false,
 		})
 	}
-	else if (isIP){
+	else if (isIP){ // search IP OSINT sources
 		chrome.windows.create({
 		  url: [`https://www.virustotal.com/gui/search/${IOC}`,
 				`https://www.abuseipdb.com/check/${IOC}`,
@@ -32,7 +39,7 @@ function main(info, tab) {
 		  incognito: false,
 		});
 	}
-	else{
+	else{ // assume IOC is domain name, search domain name OSINT sources
 		chrome.windows.create({
 		  url: [`https://www.virustotal.com/gui/search/${IOC}`,
 				`https://talosintelligence.com/reputation_center/lookup?search=${IOC}`,
