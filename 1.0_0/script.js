@@ -9,6 +9,9 @@ function main(info, tab) {
 	// get highlighted text
 	var IOC = info.selectionText;
 	
+	// replace "[dot]" with "."
+	IOC = IOC.replace(/\[dot\]/g, '.');
+	
 	// remove whitespace, quotes, brackets
 	IOC = IOC.replace(/[\"\'\[\] ]/g, '');
 	
