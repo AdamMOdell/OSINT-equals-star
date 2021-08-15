@@ -37,7 +37,7 @@ function main(info, tab) {
 				`https://talosintelligence.com/reputation_center/lookup?search=${IOC}`,
 				`https://exchange.xforce.ibmcloud.com/search/${IOC}`,
 				`https://ipinfo.io/${IOC}`,
-				`https://www.greynoise.io/viz/riot/${IOC}`,
+				`https://www.greynoise.io/viz/ip/${IOC}`,
 				`https://www.shodan.io/search?query=${IOC}`],
 		  incognito: false,
 		});
