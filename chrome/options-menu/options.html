@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>OSINT=* Options</title>
+</head>
+<body>
+
+<p>Select your desired OSINT sources below per IOC type. CTRL + Click or SHIFT + drag to select more than one value.</p>
+
+<div style="margin-bottom: 10px;">
+  <label for="domain_osint_sources"> Domain OSINT Sources: </label>
+  <select id="domain_osint_sources" name="domain_osint_sources[]" multiple="multiple" size=7 style="display:block; width: 60%; min-width: 300px;">
+   <option value="virustotal">VirusTotal</option>
+   <option value="talosintelligence">Cisco Talos Intelligence</option>
+   <option value="ibmxforce">IBM X-Force Exchange</option>
+   <option value="shodan">Shodan.io</option>
+  </select>
+</div>
+
+<div style="margin-bottom: 10px;">
+  <label for="ip_osint_sources"> IP Address OSINT Sources: </label>
+  <select id="ip_osint_sources" name="ip_osint_sources[]" multiple="multiple" size=7 style="display:block; width: 60%; min-width: 300px;">
+   <option value="virustotal">VirusTotal</option>
+   <option value="talosintelligence">Cisco Talos Intelligence</option>
+   <option value="ibmxforce">IBM X-Force Exchange</option>
+   <option value="ipinfo">IP Info</option>
+   <option value="abuseipdb">AbuseIP DB</option>
+   <option value="greynoise">Greynoise</option>
+   <option value="shodan">Shodan.io</option>
+  </select>
+</div>
+
+<div style="margin-bottom: 10px;">
+  <label for="filehash_osint_sources"> File Hash OSINT Sources: </label>
+  <select id="filehash_osint_sources" name="filehash_osint_sources[]" multiple="multiple" size=7 style="display:block; width: 60%; min-width: 300px;">
+   <option value="virustotal">VirusTotal</option>
+   <option value="talosintelligence">Cisco Talos Intelligence</option>
+   <option value="ibmxforce">IBM X-Force Exchange</option>
+   <option value="hybridanalysis">Hybrid Analysis</option>
+  </select>
+</div>
+
+<button id="save">Save Settings</button>
+<span id="status"></span>
+
+<script src="option-manager.js"></script>
+</body>
+</html>

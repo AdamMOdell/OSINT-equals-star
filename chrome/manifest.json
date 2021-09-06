@@ -10,7 +10,14 @@
    },
    "manifest_version": 2,
    "name": "OSINT=*",
-   "permissions": [ "contextMenus" ],
+   "permissions": [
+     "contextMenus",
+     "storage"
+   ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.02"
+   "version": "1.02",
+   "options_ui": {
+     "page": "options-menu\\options.html",
+     "open_in_tab": false
+   }
 }
