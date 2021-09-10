@@ -35,14 +35,12 @@ function main(info, tab) {
 
 	if (ishash){ // search hash OSINT sources
     var urls = [];
-    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'hybridanalysis'];
+    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'hybridanalysis']; //These are used if options are not set (ex: first time user)
 
     chrome.storage.sync.get({filehash_osint_sources: default_sources,}, function(items) {
-      chrome.extension.getBackgroundPage().console.log(items);
       items.filehash_osint_sources.forEach(function (item, index) { // Iterate every OSINT source you have selected
         urls.push(osint_urls[item] + IOC);
       });
-      chrome.extension.getBackgroundPage().console.log(urls);
       chrome.windows.create({ // Create the windows with the OSINT URLs
         url: urls,
         incognito: false,
@@ -54,12 +52,10 @@ function main(info, tab) {
     var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'ipinfo', 'abuseipdb', 'greynoise', 'shodan'];
 
     chrome.storage.sync.get({ip_osint_sources: default_sources,}, function(items) {
-      chrome.extension.getBackgroundPage().console.log(items);
-      items.ip_osint_sources.forEach(function (item, index) { // Iterate every OSINT source you have selected
+      items.ip_osint_sources.forEach(function (item, index) {
         urls.push(osint_urls[item] + IOC);
       });
-      chrome.extension.getBackgroundPage().console.log(urls);
-      chrome.windows.create({ // Create the windows with the OSINT URLs
+      chrome.windows.create({
         url: urls,
         incognito: false,
       });
@@ -70,12 +66,10 @@ function main(info, tab) {
     var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'shodan'];
 
     chrome.storage.sync.get({domain_osint_sources: default_sources,}, function(items) {
-      chrome.extension.getBackgroundPage().console.log(items);
-      items.domain_osint_sources.forEach(function (item, index) { // Iterate every OSINT source you have selected
+      items.domain_osint_sources.forEach(function (item, index) {
         urls.push(osint_urls[item] + IOC);
       });
-      chrome.extension.getBackgroundPage().console.log(urls);
-      chrome.windows.create({ // Create the windows with the OSINT URLs
+      chrome.windows.create({
         url: urls,
         incognito: false,
       });
