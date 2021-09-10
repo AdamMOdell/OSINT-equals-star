@@ -16,20 +16,6 @@ const osint_urls = {
   virustotal: `https://www.virustotal.com/gui/search/`
 };
 
-function get_osint_urls_by_ioc_type(ioc_type, default_sources, IOC) {
-  var urls = [];
-
-  chrome.storage.sync.get({ioc_type: default_sources},
-  function(items) {
-    items.ioc_type.forEach(function (item, index) { // Iterate every OSINT source you have selected
-      urls.push(osint_urls[item] + IOC);
-    });
-    chrome.windows.create({ // Create the windows with the OSINT URLs
-      url: urls,
-      incognito: false,
-    });
-  });
-}
 
 function main(info, tab) {
 	// get highlighted text
@@ -48,12 +34,51 @@ function main(info, tab) {
 	var isIP = !IOC.search(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/);
 
 	if (ishash){ // search hash OSINT sources
-    get_osint_urls_by_ioc_type('filehash_osint_sources', ['virustotal', 'talosintelligence', 'ibmxforce', 'hybridanalysis'], IOC);
+    var urls = [];
+    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'hybridanalysis'];
+
+    chrome.storage.sync.get({filehash_osint_sources: default_sources,}, function(items) {
+      chrome.extension.getBackgroundPage().console.log(items);
+      items.filehash_osint_sources.forEach(function (item, index) { // Iterate every OSINT source you have selected
+        urls.push(osint_urls[item] + IOC);
+      });
+      chrome.extension.getBackgroundPage().console.log(urls);
+      chrome.windows.create({ // Create the windows with the OSINT URLs
+        url: urls,
+        incognito: false,
+      });
+    });
 	}
 	else if (isIP){ // search IP OSINT sources
-    get_osint_urls_by_ioc_type('ip_osint_sources', ['virustotal', 'talosintelligence', 'ibmxforce', 'ipinfo', 'abuseipdb', 'greynoise', 'shodan'], IOC);
+    var urls = [];
+    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'ipinfo', 'abuseipdb', 'greynoise', 'shodan'];
+
+    chrome.storage.sync.get({ip_osint_sources: default_sources,}, function(items) {
+      chrome.extension.getBackgroundPage().console.log(items);
+      items.ip_osint_sources.forEach(function (item, index) { // Iterate every OSINT source you have selected
+        urls.push(osint_urls[item] + IOC);
+      });
+      chrome.extension.getBackgroundPage().console.log(urls);
+      chrome.windows.create({ // Create the windows with the OSINT URLs
+        url: urls,
+        incognito: false,
+      });
+    });
 	}
 	else{ // assume IOC is domain name, search domain name OSINT sources
-    get_osint_urls_by_ioc_type('domain_osint_sources', ['virustotal', 'talosintelligence', 'ibmxforce', 'shodan'], IOC);
+    var urls = [];
+    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'shodan'];
+
+    chrome.storage.sync.get({domain_osint_sources: default_sources,}, function(items) {
+      chrome.extension.getBackgroundPage().console.log(items);
+      items.domain_osint_sources.forEach(function (item, index) { // Iterate every OSINT source you have selected
+        urls.push(osint_urls[item] + IOC);
+      });
+      chrome.extension.getBackgroundPage().console.log(urls);
+      chrome.windows.create({ // Create the windows with the OSINT URLs
+        url: urls,
+        incognito: false,
+      });
+    });
 	}
 }
