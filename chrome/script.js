@@ -5,50 +5,74 @@ var menuId = chrome.contextMenus.create({
   onclick: main,
 })
 
+const osint_urls = {
+  abuseipdb: `https://www.abuseipdb.com/check/`,
+  greynoise: `https://www.greynoise.io/viz/ip/`,
+  hybridanalysis: `https://www.hybrid-analysis.com/search?query=`,
+  ibmxforce: `https://exchange.xforce.ibmcloud.com/search/`,
+  ipinfo: `https://ipinfo.io/`,
+  shodan: `https://www.shodan.io/search?query=`,
+  talosintelligence: `https://talosintelligence.com/reputation_center/lookup?search=`,
+  virustotal: `https://www.virustotal.com/gui/search/`
+};
+
+
 function main(info, tab) {
 	// get highlighted text
 	var IOC = info.selectionText;
-	
+
 	// replace "[dot]" with "."
 	IOC = IOC.replace(/\[dot\]/g, '.');
-	
+
 	// remove whitespace, quotes, brackets
 	IOC = IOC.replace(/[\"\'\[\] ]/g, '');
-	
+
 	// regex check if IOC is md5, sha1, sha256 hash
 	var ishash = !IOC.search(/\b[A-Fa-f0-9]{32,64}\b/);
-	
+
 	// regex check if IOC is IPv4 address
 	var isIP = !IOC.search(/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/);
-	
+
 	if (ishash){ // search hash OSINT sources
-		chrome.windows.create({
-		  url: [`https://www.virustotal.com/gui/search/${IOC}`,
-				`https://talosintelligence.com/reputation_center/lookup?search=${IOC}`,
-				`https://exchange.xforce.ibmcloud.com/search/${IOC}`,
-				`https://www.hybrid-analysis.com/search?query=${IOC}`],
-		  incognito: false,
-		})
+    var urls = [];
+    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'hybridanalysis']; //These are used if options are not set (ex: first time user)
+
+    chrome.storage.sync.get({filehash_osint_sources: default_sources,}, function(items) {
+      items.filehash_osint_sources.forEach(function (item, index) { // Iterate every OSINT source you have selected
+        urls.push(osint_urls[item] + IOC);
+      });
+      chrome.windows.create({ // Create the windows with the OSINT URLs
+        url: urls,
+        incognito: false,
+      });
+    });
 	}
 	else if (isIP){ // search IP OSINT sources
-		chrome.windows.create({
-		  url: [`https://www.virustotal.com/gui/search/${IOC}`,
-				`https://www.abuseipdb.com/check/${IOC}`,
-				`https://talosintelligence.com/reputation_center/lookup?search=${IOC}`,
-				`https://exchange.xforce.ibmcloud.com/search/${IOC}`,
-				`https://ipinfo.io/${IOC}`,
-				`https://www.greynoise.io/viz/ip/${IOC}`,
-				`https://www.shodan.io/search?query=${IOC}`],
-		  incognito: false,
-		});
+    var urls = [];
+    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'ipinfo', 'abuseipdb', 'greynoise', 'shodan'];
+
+    chrome.storage.sync.get({ip_osint_sources: default_sources,}, function(items) {
+      items.ip_osint_sources.forEach(function (item, index) {
+        urls.push(osint_urls[item] + IOC);
+      });
+      chrome.windows.create({
+        url: urls,
+        incognito: false,
+      });
+    });
 	}
 	else{ // assume IOC is domain name, search domain name OSINT sources
-		chrome.windows.create({
-		  url: [`https://www.virustotal.com/gui/search/${IOC}`,
-				`https://talosintelligence.com/reputation_center/lookup?search=${IOC}`,
-				`https://exchange.xforce.ibmcloud.com/search/${IOC}`,
-				`https://www.shodan.io/search?query=${IOC}`],
-		  incognito: false,
-		});
+    var urls = [];
+    var default_sources = ['virustotal', 'talosintelligence', 'ibmxforce', 'shodan'];
+
+    chrome.storage.sync.get({domain_osint_sources: default_sources,}, function(items) {
+      items.domain_osint_sources.forEach(function (item, index) {
+        urls.push(osint_urls[item] + IOC);
+      });
+      chrome.windows.create({
+        url: urls,
+        incognito: false,
+      });
+    });
 	}
 }
