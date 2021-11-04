@@ -15,7 +15,7 @@
      "storage"
    ],
    "update_url": "https://clients2.google.com/service/update2/crx",
-   "version": "1.02",
+   "version": "1.03",
    "options_ui": {
      "page": "options-menu\\options.html",
      "open_in_tab": false
