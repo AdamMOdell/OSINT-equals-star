@@ -7,13 +7,14 @@ var menuId = chrome.contextMenus.create({
 
 const osint_urls = {
   abuseipdb: `https://www.abuseipdb.com/check/`,
-  greynoise: `https://www.greynoise.io/viz/ip/`,
+  
   hybridanalysis: `https://www.hybrid-analysis.com/search?query=`,
   ibmxforce: `https://exchange.xforce.ibmcloud.com/search/`,
   ipinfo: `https://ipinfo.io/`,
   shodan: `https://www.shodan.io/search?query=`,
   talosintelligence: `https://talosintelligence.com/reputation_center/lookup?search=`,
   virustotal: `https://www.virustotal.com/gui/search/`
+  urlvoid: `https://www.urlvoid.com/scan/`
 };
 
 
